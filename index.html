@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentasi: Digital Marketing Cerdas</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Mendefinisikan palet warna */
+        :root {
+            --color-blue-dark: #3186FF;
+            --color-blue-medium: #346BF1;
+            --color-blue-light: #4FA0FF;
+            --color-gradient-green: #0EBC5F;
+            --color-gradient-yellow: #FFCC00;
+            --color-gradient-red: #FF4641;
+        }
+
+        /* Latar belakang dengan blob animasi */
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            color: #1a202c; /* Teks default lebih gelap */
+            background-color: #f0f4f8; /* Latar belakang netral */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blob-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px); /* Blur sangat kuat */
+            opacity: 0.6;
+            will-change: transform;
+        }
+
+        .blob1 {
+            width: 400px;
+            height: 400px;
+            background: var(--color-blue-light);
+            animation: moveBlob 20s infinite alternate;
+        }
+        .blob2 {
+            width: 300px;
+            height: 300px;
+            background: var(--color-gradient-green);
+            animation: moveBlob 25s infinite alternate-reverse;
+            animation-delay: -5s;
+        }
+        .blob3 {
+            width: 250px;
+            height: 250px;
+            background: var(--color-gradient-yellow);
+            animation: moveBlob 15s infinite alternate;
+            animation-delay: -10s;
+        }
+
+        @keyframes moveBlob {
+            0% { transform: translate(10vw, 10vh) scale(1); }
+            50% { transform: translate(60vw, 70vh) scale(1.2); }
+            100% { transform: translate(30vw, -20vh) scale(0.8); }
+        }
+
+        /* Ikon dekoratif DI DALAM SLIDE dengan animasi float */
+        .slide-bg-icon {
+            position: absolute;
+            opacity: 0.3; /* Lebih transparan */
+            filter: blur(4px); /* Lebih blur */
+            z-index: 0;
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            animation: float 6s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(var(--rotate-start, 0deg)); }
+            50% { transform: translateY(-20px) rotate(var(--rotate-end, 10deg)); }
+            100% { transform: translateY(0px) rotate(var(--rotate-start, 0deg)); }
+        }
+
+        /* Kontainer utama presentasi (Panel Kaca Utama) */
+        #presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.65); /* Kaca lebih solid */
+            backdrop-filter: blur(20px); /* Blur lebih kuat */
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); /* Bayangan biru halus */
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Border "cahaya" */
+            z-index: 2;
+        }
+
+        /* Gaya dasar untuk setiap slide */
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 3rem 4rem;
+            display: flex; 
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; }
+
+        /* Wrapper konten slide */
+        .slide-content-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tipografi yang disempurnakan */
+        .slide-title {
+            font-size: 3.25rem; /* 52px */
+            font-weight: 800; /* Extra bold */
+            margin-bottom: 0.75rem;
+            color: #2d3748; /* text-gray-800 */
+        }
+        
+        .slide-subtitle {
+            font-size: 1.75rem; /* 28px */
+            font-weight: 500; /* Medium */
+            color: #4a5568; /* text-gray-700 */
+            margin-bottom: 1rem;
+        }
+        
+        /* Kelas warna kustom */
+        .g-blue-dark { color: var(--color-blue-dark); }
+        .g-green { color: var(--color-gradient-green); }
+        .g-yellow { color: var(--color-gradient-yellow); }
+        .g-red { color: var(--color-gradient-red); }
+
+        .g-4-color-gradient {
+            background: linear-gradient(to right, var(--color-blue-dark), var(--color-gradient-green), var(--color-gradient-yellow), var(--color-gradient-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Gaya untuk kotak info/diagram */
+        .diagram-box {
+            background-color: rgba(255, 255, 255, 0.5); /* Lebih transparan */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.25rem; /* Lebih bulat */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            text-align: center;
+            color: #2d3748;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .diagram-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Gaya untuk kotak info berwarna */
+        .info-box {
+            border-left-width: 5px;
+            padding: 1.25rem;
+            border-radius: 0 1rem 1rem 0;
+            color: #2d3748;
+            background-color: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .info-box-red { border-color: var(--color-gradient-red); }
+        .info-box-yellow { border-color: var(--color-gradient-yellow); }
+
+        /* Tata Letak Bento Box (untuk Slide 5 & 8) */
+        .bento-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .bento-item {
+            background-color: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .bento-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        .bento-item-full {
+            grid-column: span 2;
+        }
+        .bento-item strong, .qualification-box strong {
+            display: block;
+            font-weight: 700;
+            font-size: 1.125rem; /* 18px */
+            margin-bottom: 0.5rem;
+            color: var(--color-blue-dark);
+        }
+        .bento-item p, .qualification-box p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem; /* 16px */
+            color: #2d3748;
+        }
+        
+        /* Tata Letak Kartu Ekosistem (Slide 9) */
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Diubah ke 2 kolom */
+            gap: 1.5rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        .ecosystem-card {
+            background-color: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .ecosystem-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        .ecosystem-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin: 0 auto 1rem;
+        }
+
+        /* Daftar Rekapitulasi (Slide 10) */
+        .recap-list {
+            list-style: none;
+            padding-left: 0;
+            max-width: 4xl;
+            margin-top: 2rem;
+        }
+        .recap-list li {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem; /* 24px */
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+        .recap-list li::before {
+            content: counter(list-item);
+            counter-increment: list-item;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: var(--color-blue-dark);
+            color: white;
+            font-weight: 700;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        /* Kontrol Navigasi Glassmorphism */
+        #navigation-controls {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            z-index: 2;
+        }
+
+        #navigation-controls button {
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            color: var(--color-blue-dark);
+            font-weight: 600;
+            padding: 0.6rem 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 9999px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        #navigation-controls button:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-color: var(--color-blue-dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        #navigation-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        
+        #slide-counter {
+            color: #4a5568;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Helper classes */
+        .text-gray-800 { color: #2d3748; }
+        .text-gray-700 { color: #4a5568; }
+        .text-gray-600 { color: #718096; }
+        .text-gray-300 { color: #e2e8f0; }
+        .text-gray-400 { color: #cbd5e0; }
+    </style>
+</head>
+<body>
+
+    
+
+<div class="blob-container">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+    </div>
+
+
+    
+
+<div id="presentation-container">
+
+        
+
+<div class="slide active p-8">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/AvMFO23.png" alt="Rocket Icon" class="slide-bg-icon" style="--rotate-start: 15deg; --rotate-end: 5deg; top: -20px; right: -20px; width: 180px; height: 180px;">
+            <img src="https://i.imgur.com/8SYDk0b.png" alt="Image Icon" class="slide-bg-icon" style="--rotate-start: -10deg; --rotate-end: 0deg; bottom: 10px; left: 10px; width: 130px; height: 130px;">
+            
+            <!-- Wrapper Konten - Slide ini tetap terpusat -->
+            <div class="slide-content-wrapper justify-center items-center text-center">
+                <h1 class="text-7xl font-bold mb-4">
+                    Digital Marketing <span class="g-4-color-gradient">Cerdas</span>
+                </h1>
+                <h2 class="text-3xl text-gray-700 max-w-3xl">
+                    Dari Tren Data Google ke Aksi Cepat dengan Google Gemini
+                </h2>
+                <div class="mt-8 text-xl text-gray-600">
+                    <p>[Nama Acara/Workshop]</p>
+                    <p>[Tanggal]</p>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/RxfeOes.png" alt="Heart Icon" class="slide-bg-icon" style="--rotate-start: -15deg; --rotate-end: -25deg; bottom: -10px; right: -10px; width: 130px; height: 130px;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title g-blue-dark">Halo, Saya Gerry</h2>
+                <div class="flex-grow grid grid-cols-3 gap-8 items-center">
+                    <!-- Kolom Foto -->
+                    <div class="col-span-1 flex justify-center items-center">
+                        <div class="w-64 h-64 rounded-full bg-gray-300 flex items-center justify-center text-gray-500 diagram-box !p-0 !rounded-full">
+                            [Foto Profesional Anda]
+                        </div>
+                    </div>
+                    <!-- Kolom Info -->
+                    <div class="col-span-2">
+                        <div class="bento-grid grid-cols-2"> <!-- MODIFIED: Menghapus grid-rows-2 -->
+                            <div class="bento-item"> <!-- MODIFIED: Menghapus row-span-1 -->
+                                <strong>Role</strong> <!-- MODIFIED: Teks diubah dari "Peran Saya" -->
+                                <p>Google Student Ambassador</p>
+                                <p>Head of Business Development at Bizclub</p>
+                            </div>
+                            <div class="bento-item"> <!-- MODIFIED: Menghapus row-span-2 -->
+                                <strong>Certification</strong> <!-- MODIFIED: Teks diubah dari "Kualifikasi Google" -->
+                                <p class="font-semibold g-green">Gemini Educator</p>
+                                <p class="font-semibold g-green">Gemini University Student</p>
+                                <p class="font-semibold g-yellow mt-2">Intermediate Qualification Google Analytics 4</p>
+                            </div>
+                            <!-- DIV "Keahlian Saya Hari Ini" telah dihapus -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/RxfeOes.png" alt="Heart Icon" class="slide-bg-icon" style="--rotate-start: -15deg; --rotate-end: -25deg; bottom: -10px; left: -10px; width: 130px; height: 130px;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title g-red">Kenapa Kampanye Marketing Gagal?</h2>
+                <div class="flex-grow grid grid-cols-2 gap-12 items-center">
+                    <div class="flex justify-center items-center">
+                        
+
+<div class="relative">
+                            <i data-lucide="target" class="w-64 h-64 text-gray-300"></i>
+                            <i data-lucide="arrow-right" class="w-32 h-32 g-red absolute top-1/2 left-full -translate-x-1/2 -translate-y-1/2 -rotate-45 opacity-80"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-bold mb-6 text-gray-800">Kita Terlalu Sering "Menebak"</h3>
+                        <ul class="list-disc pl-6 space-y-3 text-xl text-gray-700">
+                            <li>Membuat konten yang kita sukai, bukan yang pasar cari.</li>
+                            <li>Beriklan di waktu yang salah (tidak sesuai musimnya).</li>
+                            <li>Menargetkan semua orang di semua tempat (buang-buang anggaran).</li>
+                        </ul>
+                        <p class="text-xl font-bold mt-8 info-box info-box-red">
+                            Hasil: Waktu terbuang, anggaran habis, hasil tidak ada.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/yVyWemS.png" alt="Speaker Icon" class="slide-bg-icon" style="--rotate-start: -10deg; --rotate-end: 0deg; top: 10%; left: 5%;">
+            <img src="https://i.imgur.com/3WupF68.png" alt="Dino Icon" class="slide-bg-icon" style="--rotate-start: 10deg; --rotate-end: 20deg; bottom: 15%; right: 10%; width: 130px; height: 130px;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title g-blue-dark">Solusinya: Alur Kerja Pemasaran Cerdas</h2>
+                
+
+<div class="flex justify-center items-center gap-6 my-8 text-center"> <!-- MODIFIED: my-12 diubah menjadi my-8 -->
+                    <div class="diagram-box w-1/4">
+                        <img src="https://i.imgur.com/59k19WI.png" alt="Logo Google Trends" class="w-20 h-20 mx-auto object-contain mb-2">
+                        <h3 class="text-xl font-semibold text-gray-800">[DENGARKAN (Data)]</h3>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-16 h-16 text-gray-400 flex-shrink-0 opacity-75"></i>
+                    <div class="diagram-box w-1/3 !shadow-lg transform scale-105">
+                        <img src="https://i.imgur.com/4C23LL1.png" alt="Logo Google Gemini" class="w-24 h-24 mx-auto object-contain mb-2">
+                        <h3 class="text-2xl font-bold text-gray-800">[EKSEKUSI (Aksi)]</h3>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-16 h-16 text-gray-400 flex-shrink-0 opacity-75"></i>
+                    <div class="diagram-box w-1/4">
+                        <!-- DIGANTI: Ikon diubah ke logo Google Analytics agar konsisten -->
+                        <img src="https://i.imgur.com/YAsfWHI.png" alt="Logo Google Analytics" class="w-20 h-20 mx-auto object-contain mb-2">
+                        <h3 class="text-xl font-semibold text-gray-800">[KELOLA & UKUR (Hasil)]</h3>
+                    </div>
+                </div>
+                
+<!-- DIGANTI: Mengurangi gap dan ukuran font agar pas -->
+<div class="grid grid-cols-3 gap-6 text-base text-gray-700 mt-8"> <!-- MODIFIED: mt-12 diubah menjadi mt-8 -->
+                    <div><strong class="text-xl g-blue-dark block mb-2">Langkah 1: DENGARKAN (Data)</strong>Menemukan APA yang pasar cari dengan Google Trends.</div>
+                    <div><strong class="text-xl g-green block mb-2">Langkah 2: EKSEKUSI (Aksi)</strong>Menerjemahkan data menjadi strategi dan konten dengan Google Gemini.</div>
+                    <div><strong class="text-xl g-yellow block mb-2">Langkah 3: KELOLA & UKUR (Hasil)</strong>Menggunakan Google Business Profile & Google Analytics 4 untuk menjangkau dan mengukur.</div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/AvMFO23.png" alt="Rocket Icon" class="slide-bg-icon" style="--rotate-start: 25deg; --rotate-end: 15deg; bottom: 10%; right: 5%; width: 160px; height: 160px;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title">BAGIAN 1: DENGARKAN PASAR</h2>
+                <h3 class="slide-subtitle g-blue-dark">Google Trends: Kompas Pemasaran Anda</h3>
+                <div class="flex-grow grid grid-cols-2 gap-12 items-center py-8">
+                    <div class="flex justify-center items-center">
+                        <img src="https://i.imgur.com/59k19WI.png" alt="Logo Google Trends" class="w-72 h-72 object-contain">
+                    </div>
+                    <div class="text-xl">
+                        <p class="text-2xl text-gray-700 mb-6">Bukan "menebak" tren, tapi "memvalidasi" tren dengan data pencarian real-time.</p>
+                        <h4 class="text-3xl font-bold mb-4 text-gray-800">Membantu kita menjawab 3 pertanyaan kunci:</h4>
+                        <ul class="list-disc pl-6 space-y-4 text-gray-700 text-2xl">
+                            <li><strong>Validasi Ide:</strong> Apakah ide produk ini benar-benar dicari?</li>
+                            <li><strong>Menemukan Momen:</strong> KAPAN waktu terbaik untuk promosi?</li>
+                            <li><strong>Memahami "Bahasa" Pasar:</strong> Apa istilah yang dipakai audiens?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/8SYDk0b.png" alt="Image Icon" class="slide-bg-icon" style="--rotate-start: 15deg; --rotate-end: 5deg; top: 10%; right: 5%;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title"><span class="g-red">🔴 LIVE DEMO:</span> Studi Kasus "Kue Kering"</h2>
+                <h3 class="slide-subtitle text-gray-600">Apa yang Akan Kita Cari (Script Demo)</h3>
+                <!-- Tata Letak Bento Box -->
+                <div class="bento-grid grid-cols-3">
+                    <div class="bento-item">
+                        <strong>Demo 1: Validasi Momen</strong>
+                        <p>Aksi: "Kue Kering" -> "5 Tahun Terakhir".</p>
+                        <p class="font-semibold text-blue-600 mt-2">Temuan: Lonjakan masif sebelum Lebaran. (Insight 1: Waktu promosi jelas).</p>
+                    </div>
+                    <div class="bento-item">
+                        <strong>Demo 2: Memahami "Bahasa"</strong>
+                        <p>Aksi: Scroll ke "Kueri Terkait".</p>
+                        <p class="font-semibold text-blue-600 mt-2">Temuan: 'hampers lebaran' & 'resep kue kering'. (Insight 2: Audiens spesifik).</p>
+                    </div>
+                    <div class="bento-item">
+                        <strong>Demo 3: Target Geografis</strong>
+                        <p>Aksi: Lihat peta "Minat Subwilayah".</p>
+                        <p class="font-semibold text-blue-600 mt-2">Temuan: Kota mana yang paling banyak mencari. (Insight 3: Fokus iklan).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/RxfeOes.png" alt="Heart Icon" class="slide-bg-icon" style="--rotate-start: -20deg; --rotate-end: -10deg; top: 5%; left: 5%; width: 120px; height: 120px;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title">Kita Punya Data, Lalu Kenapa?</h2>
+                <div class="flex-grow flex justify-center items-center gap-16">
+                    <div class="text-center diagram-box !w-auto p-8">
+                        <img src="https://i.imgur.com/59k19WI.png" alt="Logo Google Trends" class="w-48 h-48 object-contain">
+                        <h3 class="text-2xl font-semibold mt-2 text-gray-800">DATA KITA</h3>
+                        <p class="text-xl text-gray-700 mt-2">1. Pasar sangat musiman (Lebaran).</p>
+                        <p class="text-xl text-gray-700 mt-1">2. Audiens terbagi: 'DIY' (Resep) & 'Pembeli' (Hampers).</p>
+                    </div>
+                    <i data-lucide="arrow-right-circle" class="w-24 h-24 text-gray-400 flex-shrink-0 opacity-75"></i>
+                    <div class="text-left">
+                        <h3 class="text-3xl font-bold mb-6 text-gray-800">PERTANYAAN BARU KITA:</h3>
+                        <ul class="list-disc pl-6 space-y-3 text-2xl text-gray-700">
+                            <li>Bagaimana cara bicara dengan dua audiens yang berbeda ini?</li>
+                            <li>Konten apa yang harus dibuat untuk si 'DIY' dan si 'Pembeli'?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/3WupF68.png" alt="Dino Icon" class="slide-bg-icon" style="--rotate-start: 10deg; --rotate-end: 0deg; bottom: 5%; left: 5%;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title">BAGIAN 2: UBAH DATA JADI AKSI</h2>
+                <h3 class="slide-subtitle g-green">Google Gemini: Asisten AI Strategis Anda</h3>
+                <div class="flex-grow grid grid-cols-2 gap-12 items-center py-8">
+                    <div class="flex justify-center items-center">
+                        <img src="https://i.imgur.com/4C23LL1.png" alt="Logo Google Gemini" class="w-72 h-72 object-contain">
+                    </div>
+                    <div class="text-xl">
+                        <h4 class="text-3xl font-bold mb-6 text-gray-800">Gemini membantu kita menjawab "Sekarang Bagaimana?"</h4>
+                        <p class="text-2xl text-gray-700 mb-6">Kita tidak lagi mulai dari halaman kosong. Kita akan "memberi makan" data dari Google Trends ke Gemini untuk:</p>
+                        <ul class="list-disc pl-6 space-y-4 text-gray-700 text-2xl">
+                            <li>Membuat Persona (Riset Cepat)</li>
+                            <li>Merancang Strategi Konten (Ideasi)</li>
+                            <li>Menulis Caption/Naskah (Eksekusi)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/yVyWemS.png" alt="Speaker Icon" class="slide-bg-icon" style="--rotate-start: 20deg; --rotate-end: 10deg; bottom: 10%; right: 5%;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title"><span class="g-red">🔴 LIVE DEMO:</span> Gemini sebagai Analis</h2>
+                <h3 class="slide-subtitle text-gray-600">Prompt #1 - Membuat Buyer Persona</h3>
+                <div class="bento-grid grid-cols-1 mt-8">
+                    <div class="bento-item">
+                        <strong>Prompt yang akan kita gunakan:</strong>
+                        <p class="text-lg">"Saya pebisnis UMKM kue kering. Data Google Trends menunjukkan audiens saya terbagi dua:
+                        <br>1. Orang yang mencari 'resep kue kering lebaran' (DIY).
+                        <br>2. Orang yang mencari 'hampers kue kering lebaran' (Pembeli).
+                        <br><br>Tolong buatkan 2 buyer persona lengkap untuk masing-masing audiens ini."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/AvMFO23.png" alt="Rocket Icon" class="slide-bg-icon" style="--rotate-start: -15deg; --rotate-end: -5deg; top: 10%; left: 10%; width: 130px; height: 130px;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title"><span class="g-red">🔴 LIVE DEMO:</span> Gemini sebagai Kreator</h2>
+                <h3 class="slide-subtitle text-gray-600">Prompt #2 & #3 - Membuat Konten Tertarget</h3>
+                <!-- Tata Letak Bento Box -->
+                <div class="bento-grid grid-cols-2 mt-8">
+                    <div class="bento-item">
+                        <strong>Prompt #2 (Untuk Persona DIY)</strong>
+                        <p class="text-lg">"Bagus. Sekarang, untuk persona 'Ibu Rina' (si pencari resep), buatkan 3 ide konten Instagram Reels dengan tema 'Tips Resep Kue Kering Lebaran Anti Gagal'. Buat judul yang menarik."</p>
+                    </div>
+                    <div class="bento-item">
+                        <strong>Prompt #3 (Untuk Persona Pembeli)</strong>
+                        <p class="text-lg">"Oke, sekarang untuk persona 'Dian' (si pekerja sibuk), tuliskan 1 caption Instagram persuasif untuk meluncurkan produk 'Hampers Kue Kering Lebaran 2024 Edisi Modern & Elegan'."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/8SYDk0b.png" alt="Image Icon" class="slide-bg-icon" style="--rotate-start: 15deg; --rotate-end: 25deg; bottom: 10%; right: 10%;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title">Langkah 3: Kelola & Ukur</h2>
+                <h3 class="slide-subtitle text-gray-600">Jangan Berhenti Hanya di Konten</h3>
+                
+                <!-- Tata Letak Kartu Ekosistem (2 Kartu) -->
+                <div class="ecosystem-grid my-8 gap-12">
+                    <div class="ecosystem-card">
+                        <img src="https://i.imgur.com/EOph9Jb.png" alt="Logo Google Business Profile">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Google Business Profile (GBP)</h3>
+                        <p class="text-lg text-gray-700">"Etalase" gratis Anda di Google Maps & Pencarian. Posting foto & caption agar muncul di pencarian "kue kering dekat sini".</p>
+                    </div>
+                    <div class="ecosystem-card">
+                        <img src="https://i.imgur.com/YAsfWHI.png" alt="Logo Google Analytics">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Google Analytics 4 (GA4)</h3>
+                        <p class="text-lg text-gray-700">"CCTV" untuk website Anda. Lacak dari kota mana pembeli datang dan apakah mereka jadi membeli.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+<div class="slide">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/RxfeOes.png" alt="Heart Icon" class="slide-bg-icon" style="--rotate-start: 15deg; --rotate-end: 5deg; top: 10%; right: 10%;">
+            
+            <!-- Wrapper Konten -->
+            <div class="slide-content-wrapper">
+                <h2 class="slide-title g-blue-dark">Alur Kerja Cerdas Anda (Rekapitulasi)</h2>
+                <div class="flex-grow flex items-center justify-center">
+                    <ol class="recap-list" style="counter-reset: list-item;">
+                        <li><strong class="g-blue-dark">DENGARKAN (Trends):</strong> Temukan insight "kue kering lebaran" & "resep".</li>
+                        <li><strong class="g-green">PAHAMI (Gemini):</strong> Definisikan 2 persona: Si DIY (Ibu Rina) & Si Pembeli (Dian).</li>
+                        <li><strong class="g-green">EKSEKUSI (Gemini):</strong> Buat ide "Reels Resep" dan "Caption Hampers".</li>
+                        <li><strong class="g-blue-dark">KELOLA (GBP):</strong> Posting konten di Google Business Profile (Maps).</li>
+                        <li><strong class="g-yellow">UKUR (GA4):</strong> Lacak penjualan di website dari target kota yang spesifik.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        
+
+<div class="slide p-8">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/3WupF68.png" alt="Dino Icon" class="slide-bg-icon" style="--rotate-start: -10deg; --rotate-end: 0deg; top: 10%; left: 10%;">
+            
+            <!-- Wrapper Konten - Slide ini tetap terpusat -->
+            <div class="slide-content-wrapper justify-center items-center text-center">
+                <i data-lucide="check-check" class="w-32 h-32 g-green mb-8"></i>
+                <h2 class="text-5xl font-bold mb-10 text-gray-800">Berhenti Menebak, Mulai Menganalisis</h2>
+                <h3 class="text-4xl font-semibold g-blue-dark mb-8">Data adalah Kompas Anda. AI adalah Akselerator Anda.</h3>
+                <ul class="list-none space-y-4 text-2xl text-gray-700">
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="check-circle" class="w-6 h-6 g-green flex-shrink-0"></i>
+                        Pemasaran modern adalah soal "siapa yang paling cepat merespon data".
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="check-circle" class="w-6 h-6 g-green flex-shrink-0"></i>
+                        Gunakan <strong class="g-blue-dark">Google Trends</strong> untuk menemukan insight.
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="check-circle" class="w-6 h-6 g-green flex-shrink-0"></i>
+                        Gunakan <strong class="g-green">Google Gemini</strong> untuk mengeksekusi insight tersebut.
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i data-lucide="check-circle" class="w-6 h-6 g-green flex-shrink-0"></i>
+                        Mulailah dari data, bukan dari asumsi.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        
+
+<div class="slide p-8">
+            <!-- Ikon Latar Slide -->
+            <img src="https://i.imgur.com/yVyWemS.png" alt="Speaker Icon" class="slide-bg-icon" style="--rotate-start: 15deg; --rotate-end: 5deg; top: 10%; right: 10%;">
+            <img src="https://i.imgur.com/RxfeOes.png" alt="Heart Icon" class="slide-bg-icon" style="--rotate-start: -15deg; --rotate-end: -5deg; bottom: 10%; left: 10%;">
+            
+            <!-- Wrapper Konten - Slide ini tetap terpusat -->
+            <div class="slide-content-wrapper justify-center items-center text-center">
+                <h2 class="text-6xl font-bold g-blue-dark">Terima Kasih</h2>
+                <h3 class="text-5xl font-bold mt-24 text-gray-800 mb-12">Q & A</h3>
+                <div class="text-2xl space-y-3 text-gray-700">
+                    <p class="font-semibold text-3xl">Gerry</p>
+                    <p>[Email Anda]</p>
+                    <p>[LinkedIn/Instagram Anda]</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+
+<div id="navigation-controls">
+        <button id="prev-button">
+            <i class="inline-block" data-lucide="arrow-left"></i> Sebelumnya
+        </button>
+        <span id="slide-counter">Slide 1 / 14</span>
+        <button id="next-button">
+            Berikutnya <i class="inline-block" data-lucide="arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        // Memanggil fungsi untuk membuat ikon Lucide
+        lucide.createIcons();
+
+        // Logika JavaScript untuk navigasi slide
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const slideCount = slides.length;
+
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const slideCounter = document.getElementById('slide-counter');
+
+        function showSlide(n) {
+            // Sembunyikan slide saat ini
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.remove('active');
+            }
+            
+            // Perbarui indeks slide
+            currentSlide = n;
+
+            // Tampilkan slide baru
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.add('active');
+            }
+            
+            // Perbarui kontrol navigasi
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            // Perbarui teks penghitung slide
+            slideCounter.textContent = `Slide ${currentSlide + 1} / ${slideCount}`;
+            
+            // Nonaktifkan tombol 'Sebelumnya' jika di slide pertama
+            prevButton.disabled = (currentSlide === 0);
+            
+            // Nonaktifkan tombol 'Berikutnya' jika di slide terakhir
+            nextButton.disabled = (currentSlide === slideCount - 1);
+        }
+
+        // Event listener untuk tombol
+        prevButton.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentSlide < slideCount - 1) {
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        // Event listener untuk navigasi keyboard (panah kiri/kanan)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextButton.click(); // Simulasikan klik tombol berikutnya
+            } else if (e.key === 'ArrowLeft') {
+                prevButton.click(); // Simulasikan klik tombol sebelumnya
+            }
+        });
+
+        // Tampilkan slide pertama saat dimuat
+        showSlide(0);
+    </script>
+
+</body>
+</html>
+
+
+
+
